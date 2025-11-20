@@ -73,6 +73,10 @@ public class Case02 {
 
 		// ログイン後のエビデンス取得
 		getEvidence(new Object() {}, "after");
+		
+		// エラーメッセージの一致確認
+		String errorMsg = webDriver.findElement(By.className("help-inline")).getText();
+		assertEquals("* ログインに失敗しました。", errorMsg);
 	}
 
 }
