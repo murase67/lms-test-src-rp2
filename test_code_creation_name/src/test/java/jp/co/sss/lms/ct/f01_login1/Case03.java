@@ -63,7 +63,7 @@ public class Case03 {
 		loginId.clear();
 		loginId.sendKeys("StudentAA01");
 		password.clear();
-		password.sendKeys("StudentAAAA");
+		password.sendKeys("studentAA01");
 
 		// ログイン前のエビデンス取得
 		getEvidence(new Object() {}, "before");
@@ -73,6 +73,10 @@ public class Case03 {
 
 		// ログイン後のエビデンス取得
 		getEvidence(new Object() {}, "after");
+		
+		// 遷移先のURLの一致確認
+		String url = webDriver.getCurrentUrl();
+		assertEquals("http://localhost:8080/lms/course/detail", url);
 	}
 
 }
