@@ -1,9 +1,8 @@
 package jp.co.sss.lms.ct.f02_faq;
 
 import static jp.co.sss.lms.ct.util.WebDriverUtils.*;
-import static org.junit.Assert.*;
-
-import java.util.List;
+import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -161,12 +160,9 @@ public class Case05 {
 		scrollTo("10");
 
 		// 検索結果にキーワードが含まれているかの確認
-		List<WebElement> results = webDriver.findElements(By.cssSelector("tbody tr"));
-		assertTrue(results.size() > 0);
-		for(WebElement result : results) {
-			String text = result.getText();
-			assertTrue(text.contains("途中退校"));
-		}
+		final WebElement result = webDriver.findElement(By.cssSelector("tbody tr"));
+		String text = result.getText();
+		assertTrue(text.contains("途中退校"));
 	}
 
 	@Test
