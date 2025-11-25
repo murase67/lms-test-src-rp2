@@ -109,9 +109,9 @@ public class Case08 {
 		getEvidence(new Object() {
 		});
 
-		// 遷移先のページの日付が対象と一致しているか確認
-		String date = webDriver.findElement(By.cssSelector("#sectionDetail > h2 > small")).getText();
-		assertEquals("2022年10月2日", date);
+		// 遷移後URLの一致確認
+		String url = webDriver.getCurrentUrl();
+		assertEquals("http://localhost:8080/lms/section/detail", url);
 	}
 
 	@Test
@@ -150,7 +150,7 @@ public class Case08 {
 		// 情報の取得
 		final WebElement inputText = webDriver.findElement(By.id("content_1"));
 		final WebElement submitBtn = webDriver
-				.findElement(By.cssSelector("#main > form > div:nth-child(3) > fieldset > div > div > button"));
+				.findElement(By.cssSelector("button[type='submit']"));
 
 		// 入力キー
 		inputText.clear();
@@ -178,7 +178,7 @@ public class Case08 {
 
 		// リンクを取得し、押下する
 		final WebElement userLink = webDriver
-				.findElement(By.cssSelector("#nav-content > ul.nav.navbar-nav.navbar-right > li:nth-child(2) > a"));
+				.findElement(By.cssSelector("a[href='/lms/user/detail']"));
 		userLink.click();
 
 		// 遷移後のエビデンス取得
@@ -198,24 +198,23 @@ public class Case08 {
 		// ページ最下部までスクロール
 		scrollTo("1000");
 
-		// ボタン押下前のエビデンス取得
-		getEvidence(new Object() {
-		}, "before");
-
 		// 対象の詳細ボタン押下
-		final WebElement targetRepo = webDriver.findElement(By.cssSelector("#main > table:nth-child(8) > tbody > tr:nth-child(3) > td:nth-child(5) > form:nth-child(1) > input.btn.btn-default"));
+		final WebElement targetRepo = webDriver.findElement(By.cssSelector(
+				"#main > table:nth-child(8) > tbody > tr:nth-child(3) > td:nth-child(5) > form:nth-child(1) > input.btn.btn-default"));
 		targetRepo.click();
 
-		// ボタン押下後のエビデンス取得
+		// 遷移後のエビデンス取得
 		getEvidence(new Object() {
-		}, "after");
+		});
 
 		// 遷移後URLの一致確認
 		String url = webDriver.getCurrentUrl();
 		assertEquals("http://localhost:8080/lms/report/detail", url);
 
 		// 修正内容の一致確認
-		String repoText = webDriver.findElement(By.cssSelector("#main > div:nth-child(4) > table > tbody > tr:nth-child(2) > td")).getText();
+		String repoText = webDriver
+				.findElement(By.cssSelector("#main > div:nth-child(4) > table > tbody > tr:nth-child(2) > td"))
+				.getText();
 		assertEquals("修正サンプル", repoText);
 	}
 

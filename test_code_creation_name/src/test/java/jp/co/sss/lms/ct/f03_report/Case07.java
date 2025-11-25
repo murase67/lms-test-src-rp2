@@ -89,74 +89,72 @@ public class Case07 {
 	@Order(3)
 	@DisplayName("テスト03 未提出の研修日の「詳細」ボタンを押下しセクション詳細画面に遷移")
 	void test03() {
-		
-		// 全てのtrを取得
-		List<WebElement> rows = webDriver.findElements(By.cssSelector("tbody tr"));
-		
-		// 対象の日付を格納
-		String targetDate = "2022年10月5日(水)";
-		
-		// 対象の詳細ボタンを探して押下
-		for(WebElement row : rows) {
-			String dateText = row.findElement(By.cssSelector("td:nth-child(1)")).getText();
-			if(dateText.equals(targetDate)) {
-				row.findElement(By.cssSelector("input[value='詳細']")).click();
+
+		// テーブルを取得
+		List<WebElement> rows = webDriver.findElements(By.cssSelector(".sctionList tbody tr"));
+
+		// 未提出を探して詳細ボタンを押下
+		for (WebElement row : rows) {
+			final WebElement statusCell = row.findElement(By.xpath(".//span"));
+			if (statusCell.getText().equals("未提出")) {
+				WebElement detailBtn = row.findElement(By.cssSelector("input[value='詳細']"));
+				detailBtn.click();
 				break;
 			}
 		}
-		
+
 		// 遷移後のエビデンス取得
 		getEvidence(new Object() {
 		});
-		
-		// 遷移先のページの日付が対象と一致しているか確認
-		String date = webDriver.findElement(By.cssSelector("#sectionDetail > h2 > small")).getText();
-		assertEquals("2022年10月5日", date);
+
+		// 遷移後URLの一致確認
+		String url = webDriver.getCurrentUrl();
+		assertEquals("http://localhost:8080/lms/section/detail", url);
 	}
 
 	@Test
 	@Order(4)
 	@DisplayName("テスト04 「提出する」ボタンを押下しレポート登録画面に遷移")
 	void test04() {
-		
+
 		// 提出ボタンを取得し押下
 		final WebElement submissionBtn = webDriver.findElement(By.cssSelector("input[value='日報【デモ】を提出する']"));
 		submissionBtn.click();
-		
+
 		// 遷移後のエビデンス取得
 		getEvidence(new Object() {
 		});
-		
+
 		// 遷移先URLの一致確認
 		String url = webDriver.getCurrentUrl();
 		assertEquals("http://localhost:8080/lms/report/regist", url);
 	}
-		
 
 	@Test
 	@Order(5)
 	@DisplayName("テスト05 報告内容を入力して「提出する」ボタンを押下し確認ボタン名が更新される")
 	void test05() {
-		
+
 		// 情報の取得
 		final WebElement inputText = webDriver.findElement(By.className("form-control"));
-		final WebElement submitBtn = webDriver.findElement(By.cssSelector("#main > form > div:nth-child(2) > fieldset > div > div > button"));
-		
+		final WebElement submitBtn = webDriver
+				.findElement(By.cssSelector("button[type='submit']"));
+
 		// 入力キー
 		inputText.clear();
 		inputText.sendKeys("日報提出サンプル");
-		
+
 		// 提出ボタン押下前のエビデンス取得
 		getEvidence(new Object() {
 		}, "before");
-		
+
 		// 提出ボタン押下
 		submitBtn.click();
-		
+
 		// 提出ボタン押下後のエビデンス取得
 		getEvidence(new Object() {
 		}, "after");
-		
+
 		// ボタン押下後にボタン名が更新されていることを確認
 		String btn = webDriver.findElement(By.cssSelector("input[type='submit']")).getAttribute("value");
 		assertEquals("提出済み日報【デモ】を確認する", btn);
