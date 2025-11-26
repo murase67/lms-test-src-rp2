@@ -4,11 +4,14 @@ import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
 
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -114,5 +117,31 @@ public class WebDriverUtils {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	/**
+	 * 待ち処理の戻り値あり
+	 * 
+	 * @param locater
+	 * @param second
+	 * @return
+	 */
+	public static WebElement visibility(By locater, int second) {
+		WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(second));
+		return wait.until(ExpectedConditions.visibilityOfElementLocated(locater));
+	}
+	
+	/**
+	 * アラート受け入れ処理
+	 * 
+	 * @param driver
+	 */
+	public static void acceptAlertIfPresent(WebDriver driver) {
+        try {
+            Alert alert = driver.switchTo().alert();
+            alert.accept(); 
+        } catch (NoAlertPresentException e) {
+        }
+    }
 
 }
