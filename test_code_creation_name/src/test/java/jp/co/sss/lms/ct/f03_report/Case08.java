@@ -152,6 +152,10 @@ public class Case08 {
 		final WebElement submitBtn = webDriver
 				.findElement(By.cssSelector("button[type='submit']"));
 
+		// 提出ボタン押下前のエビデンス取得
+		getEvidence(new Object() {
+		}, "beforeModifying");
+
 		// 入力キー
 		inputText.clear();
 		inputText.sendKeys("修正サンプル");
