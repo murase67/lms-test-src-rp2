@@ -148,6 +148,7 @@ public class Case17 {
 		getEvidence(new Object() {
 		}, "afterUpdate");
 
+		// ページ遷移まで待ち
 		pageLoadTimeout(10);
 
 		// 遷移後のエビデンス取得
