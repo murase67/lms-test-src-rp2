@@ -247,7 +247,7 @@ public class Case13 {
 		List<WebElement> pastTestResutts = webDriver.findElements(By.xpath("//*[@id=\"main\"]/div/table[2]//td"));
 		boolean found = false;
 		for (WebElement td : pastTestResutts) {
-			if (td.getText().equals("4回目")) {
+			if (td.getText().equals("0.0点")) {
 				found = true;
 				break;
 			}
