@@ -1,6 +1,7 @@
 package jp.co.sss.lms.ct.f06_login2;
 
 import static jp.co.sss.lms.ct.util.WebDriverUtils.*;
+import static org.junit.Assert.*;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -9,6 +10,10 @@ import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
+import jp.co.sss.lms.ct.util.WebDriverUtils;
 
 /**
  * 結合テスト ログイン機能②
@@ -35,49 +40,240 @@ public class Case16 {
 	@Order(1)
 	@DisplayName("テスト01 トップページURLでアクセス")
 	void test01() {
-		// TODO ここに追加
+		// 遷移先URL
+		goTo("http://localhost:8080/lms");
+		// ページタイトルの一致確認
+		String title = WebDriverUtils.webDriver.getTitle();
+		assertEquals("ログイン | LMS", title);
+		// エビデンス取得
+		getEvidence(new Object() {
+		});
 	}
 
 	@Test
 	@Order(2)
 	@DisplayName("テスト02 DBに初期登録された未ログインの受講生ユーザーでログイン")
 	void test02() {
-		// TODO ここに追加
+		// 値の取得
+		final WebElement login = webDriver.findElement(By.className("btn-primary"));
+		final WebElement loginId = webDriver.findElement(By.id("loginId"));
+		final WebElement password = webDriver.findElement(By.id("password"));
+
+		// キー入力
+		loginId.clear();
+		loginId.sendKeys("StudentAA03");
+		password.clear();
+		password.sendKeys("StudentAA03");
+
+		// ログイン前のエビデンス取得
+		getEvidence(new Object() {
+		}, "before");
+
+		// ログインボタンをクリック
+		login.click();
+
+		// ログイン後のエビデンス取得
+		getEvidence(new Object() {
+		}, "after");
+
+		// 遷移先のURLの一致確認
+		String url = webDriver.getCurrentUrl();
+		assertEquals("http://localhost:8080/lms/user/agreeSecurity", url);
 	}
 
 	@Test
 	@Order(3)
 	@DisplayName("テスト03 「同意します」チェックボックスにチェックを入れ「次へ」ボタン押下")
 	void test03() {
-		// TODO ここに追加
+
+		// チェックボックスを取得してチェックを入れる
+		final WebElement agreement = webDriver.findElement(By.cssSelector("input[type='checkbox']"));
+		agreement.click();
+
+		// ログイン前のエビデンス取得
+		getEvidence(new Object() {
+		}, "before");
+
+		// ページ最下部までスクロール
+		scrollTo("1000");
+
+		// 更新ボタンを取得して押下する
+		final WebElement nextBtn = webDriver.findElement(By.cssSelector("button[type='submit']"));
+		nextBtn.click();
+
+		// ログイン前のエビデンス取得
+		getEvidence(new Object() {
+		}, "after");
+
+		// 遷移先のURLの一致確認
+		String url = webDriver.getCurrentUrl();
+		assertEquals("http://localhost:8080/lms/password/changePassword", url);
+
 	}
 
 	@Test
 	@Order(4)
 	@DisplayName("テスト04 パスワードを未入力で「変更」ボタン押下")
 	void test04() {
-		// TODO ここに追加
+
+		// 入力欄の取得
+		final WebElement password = webDriver.findElement(By.id("password"));
+		final WebElement passwordConfirm = webDriver.findElement(By.id("passwordConfirm"));
+
+		// キー入力
+		password.clear();
+		password.sendKeys("studentAA03");
+		passwordConfirm.clear();
+		passwordConfirm.sendKeys("studentAA03");
+
+		// ページ最下部までスクロール
+		scrollTo("1000");
+
+		// 変更ボタンを取得して押下
+		final WebElement submitBtn = webDriver.findElement(By.cssSelector("button[type='submit']"));
+		submitBtn.click();
+
+		// 更新前のエビデンス取得
+		getEvidence(new Object() {
+		}, "beforeUpdate");
+
+		// 確認モーダルウィンドウの変更ボタンを取得して押下
+		final WebElement upBtn = webDriver.findElement(By.id("upd-btn"));
+		upBtn.click();
+
+		// 更新後のエビデンス取得
+		getEvidence(new Object() {
+		}, "afterUpdate");
+
+		// エラーメッセージの一致確認
+		String errorMsg = webDriver.findElement(By.xpath("//*[@id=\"upd-form\"]/div[1]/fieldset/div[1]/div/ul/li/span")).getText();
+		assertEquals("現在のパスワードは必須です。", errorMsg);
 	}
 
 	@Test
 	@Order(5)
 	@DisplayName("テスト05 20文字以上の変更パスワードを入力し「変更」ボタン押下")
 	void test05() {
-		// TODO ここに追加
+
+		// 入力欄の取得
+		final WebElement currentPassword = webDriver.findElement(By.id("currentPassword"));
+		final WebElement password = webDriver.findElement(By.id("password"));
+		final WebElement passwordConfirm = webDriver.findElement(By.id("passwordConfirm"));
+
+		// キー入力
+		currentPassword.clear();
+		currentPassword.sendKeys("StudentAA03");
+		password.clear();
+		password.sendKeys("studentAA03aaaaaaaaaa");
+		passwordConfirm.clear();
+		passwordConfirm.sendKeys("studentAA03aaaaaaaaaa");
+
+		// ページ最下部までスクロール
+		scrollTo("1000");
+
+		// 変更ボタンを取得して押下
+		final WebElement submitBtn = webDriver.findElement(By.cssSelector("button[type='submit']"));
+		submitBtn.click();
+
+		// 更新前のエビデンス取得
+		getEvidence(new Object() {
+		}, "beforeUpdate");
+
+		// 確認モーダルウィンドウの変更ボタンを取得して押下
+		final WebElement upBtn = webDriver.findElement(By.id("upd-btn"));
+		upBtn.click();
+
+		// 更新後のエビデンス取得
+		getEvidence(new Object() {
+		}, "afterUpdate");
+
+		// エラーメッセージの一致確認
+		String errorMsg = webDriver.findElement(By.xpath("//*[@id=\"upd-form\"]/div[1]/fieldset/div[2]/div/ul/li/span")).getText();
+		assertEquals("パスワードの長さが最大値(20)を超えています。", errorMsg);
 	}
 
 	@Test
 	@Order(6)
 	@DisplayName("テスト06 ポリシーに合わない変更パスワードを入力し「変更」ボタン押下")
 	void test06() {
-		// TODO ここに追加 
+
+		// 入力欄の取得
+		final WebElement currentPassword = webDriver.findElement(By.id("currentPassword"));
+		final WebElement password = webDriver.findElement(By.id("password"));
+		final WebElement passwordConfirm = webDriver.findElement(By.id("passwordConfirm"));
+
+		// キー入力
+		currentPassword.clear();
+		currentPassword.sendKeys("StudentAA03");
+		password.clear();
+		password.sendKeys("StudentAA03");
+		passwordConfirm.clear();
+		passwordConfirm.sendKeys("StudentAA03");
+
+		// ページ最下部までスクロール
+		scrollTo("1000");
+
+		// 変更ボタンを取得して押下
+		final WebElement submitBtn = webDriver.findElement(By.cssSelector("button[type='submit']"));
+		submitBtn.click();
+
+		// 更新前のエビデンス取得
+		getEvidence(new Object() {
+		}, "beforeUpdate");
+
+		// 確認モーダルウィンドウの変更ボタンを取得して押下
+		final WebElement upBtn = webDriver.findElement(By.id("upd-btn"));
+		upBtn.click();
+
+		// 更新後のエビデンス取得
+		getEvidence(new Object() {
+		}, "afterUpdate");
+
+		// エラーメッセージの一致確認
+		String errorMsg = webDriver.findElement(By.xpath("//*[@id=\"upd-form\"]/div[1]/fieldset/div[2]/div/ul/li/span")).getText();
+		assertEquals("現在と同じパスワードは使用できません。", errorMsg);
 	}
 
 	@Test
 	@Order(7)
 	@DisplayName("テスト07 一致しない確認パスワードを入力し「変更」ボタン押下")
 	void test07() {
-		// TODO ここに追加
+
+		// 入力欄の取得
+		final WebElement currentPassword = webDriver.findElement(By.id("currentPassword"));
+		final WebElement password = webDriver.findElement(By.id("password"));
+		final WebElement passwordConfirm = webDriver.findElement(By.id("passwordConfirm"));
+
+		// キー入力
+		currentPassword.clear();
+		currentPassword.sendKeys("StudentAA03");
+		password.clear();
+		password.sendKeys("studentAA03");
+		passwordConfirm.clear();
+		passwordConfirm.sendKeys("studentAAAA");
+
+		// ページ最下部までスクロール
+		scrollTo("1000");
+
+		// 変更ボタンを取得して押下
+		final WebElement submitBtn = webDriver.findElement(By.cssSelector("button[type='submit']"));
+		submitBtn.click();
+
+		// 更新前のエビデンス取得
+		getEvidence(new Object() {
+		}, "beforeUpdate");
+
+		// 確認モーダルウィンドウの変更ボタンを取得して押下
+		final WebElement upBtn = webDriver.findElement(By.id("upd-btn"));
+		upBtn.click();
+
+		// 更新後のエビデンス取得
+		getEvidence(new Object() {
+		}, "afterUpdate");
+
+		// エラーメッセージの一致確認
+		String errorMsg = webDriver.findElement(By.xpath("//*[@id=\"upd-form\"]/div[1]/fieldset/div[2]/div/ul/li/span")).getText();
+		assertEquals("パスワードと確認パスワードが一致しません。", errorMsg);
 	}
 
 }

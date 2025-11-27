@@ -304,7 +304,7 @@ public class Case12 {
 
 	@Test
 	@Order(9)
-	@DisplayName("テスト07 不適切な内容で修正してエラー表示：出勤が未入力で退勤に入力有")
+	@DisplayName("テスト09 不適切な内容で修正してエラー表示：出勤が未入力で退勤に入力有")
 	void test9() {
 
 		// 一番上の出勤（時）を取得し未入力にする
@@ -349,7 +349,7 @@ public class Case12 {
 
 	@Test
 	@Order(10)
-	@DisplayName("テスト07 不適切な内容で修正してエラー表示：出勤が退勤よりも遅い時間")
+	@DisplayName("テスト10 不適切な内容で修正してエラー表示：出勤が退勤よりも遅い時間")
 	void test10() {
 
 		// キーの取得
@@ -411,7 +411,7 @@ public class Case12 {
 
 	@Test
 	@Order(11)
-	@DisplayName("テスト08 不適切な内容で修正してエラー表示：出退勤時間を超える中抜け時間")
+	@DisplayName("テスト11 不適切な内容で修正してエラー表示：出退勤時間を超える中抜け時間")
 	void test11() {
 
 		// 一番上の中抜け時間を取得し"4時間"を入力する
@@ -455,14 +455,14 @@ public class Case12 {
 
 	@Test
 	@Order(12)
-	@DisplayName("テスト09 不適切な内容で修正してエラー表示：備考が100文字超")
+	@DisplayName("テスト12 不適切な内容で修正してエラー表示：備考が100文字超")
 	void test12() {
 
 		// 一番上の備考を取得し、101文字入力する
 		final WebElement noteError = webDriver.findElement(By.name("attendanceList[0].note"));
 		noteError.clear();
-		noteError.sendKeys(
-				"いろはにほへとちりぬるをわかよたれそつねならむうゐのおくやまけふこえてあさきゆめみしゑひもせすんいろはにほへとちりぬるをわかよたれそつねならむうゐのおくやまけふこえてあさきゆめみしゑひもせすんいろはにほ");
+		String str = "あ";
+		noteError.sendKeys(str.repeat(101));
 
 		// ボタン押下前のエビデンス取得
 		getEvidence(new Object() {

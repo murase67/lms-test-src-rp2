@@ -171,8 +171,8 @@ public class Case11 {
 		}, "after");
 
 		// 遷移先画面の一致確認
-		String text = webDriver.findElement(By.tagName("h2")).getText();
-		assertEquals("勤怠管理", text);
+		String text = webDriver.findElement(By.xpath("//span[contains(text(),'完了')]")).getText();
+		assertEquals("勤怠情報の登録が完了しました。", text);
 	}
 
 }
