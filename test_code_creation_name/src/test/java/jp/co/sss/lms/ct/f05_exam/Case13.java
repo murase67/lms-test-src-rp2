@@ -123,6 +123,7 @@ public class Case13 {
 	@DisplayName("テスト04 「本日の試験」エリアの「詳細」ボタンを押下し試験開始画面に遷移")
 	void test04() {
 
+		// ボタンを取得して押下
 		final WebElement detailBtn = webDriver.findElement(By.cssSelector("input[value='詳細']"));
 		detailBtn.click();
 
@@ -154,6 +155,7 @@ public class Case13 {
 		getEvidence(new Object() {
 		}, "before");
 
+		// ボタンを取得して押下
 		final WebElement startBtn = webDriver.findElement(By.cssSelector("input[value='試験を開始する']"));
 		startBtn.click();
 
@@ -178,6 +180,7 @@ public class Case13 {
 		getEvidence(new Object() {
 		}, "before");
 
+		// ボタンを取得して押下
 		final WebElement checkBtn = webDriver.findElement(By.cssSelector("input[value='確認画面へ進む']"));
 		checkBtn.click();
 
@@ -202,9 +205,11 @@ public class Case13 {
 		getEvidence(new Object() {
 		}, "before");
 
+		// ボタンを取得して押下
 		final WebElement sendBtn = webDriver.findElement(By.cssSelector("button[id='sendButton']"));
 		sendBtn.click();
 
+		// アラート受け入れ処理
 		acceptAlertIfPresent(webDriver);
 
 		// 遷移後のエビデンス取得
@@ -228,6 +233,7 @@ public class Case13 {
 		getEvidence(new Object() {
 		}, "before");
 
+		// ボタンを取得して押下
 		final WebElement backBtn = webDriver.findElement(By.cssSelector("input[value='戻る']"));
 		backBtn.click();
 
