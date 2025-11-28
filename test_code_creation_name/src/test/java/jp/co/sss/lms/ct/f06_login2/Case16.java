@@ -123,12 +123,14 @@ public class Case16 {
 		final WebElement submitBtn = webDriver.findElement(By.cssSelector("button[type='submit']"));
 		submitBtn.click();
 
-		// 更新前のエビデンス取得
+		// 確認モーダルウィンドウ表示前のエビデンス取得
 		getEvidence(new Object() {
 		}, "beforeModal");
 
+		// 待ち処理
 		visibilityTimeout(By.id("upd-btn"), 10);
 
+		// 確認モーダルウィンドウのエビデンス取得
 		getEvidence(new Object() {
 		}, "modalOpen");
 
@@ -136,6 +138,7 @@ public class Case16 {
 		final WebElement upBtn = webDriver.findElement(By.id("upd-btn"));
 		upBtn.click();
 
+		// 該当箇所までスクロール
 		scrollBy("100");
 
 		// 更新後のエビデンス取得
