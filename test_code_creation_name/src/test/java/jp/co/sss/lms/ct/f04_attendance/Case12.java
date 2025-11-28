@@ -154,7 +154,7 @@ public class Case12 {
 
 		// アラート受け入れ処理
 		acceptAlertIfPresent(webDriver);
-
+	
 		// 遷移後のエビデンス取得
 		getEvidence(new Object() {
 		}, "after");
@@ -305,7 +305,7 @@ public class Case12 {
 	@Test
 	@Order(9)
 	@DisplayName("テスト09 不適切な内容で修正してエラー表示：出勤が未入力で退勤に入力有")
-	void test9() {
+	void test09() {
 
 		// 一番上の出勤（時）を取得し未入力にする
 		final WebElement startHourError = webDriver.findElement(By.id("startHour0"));

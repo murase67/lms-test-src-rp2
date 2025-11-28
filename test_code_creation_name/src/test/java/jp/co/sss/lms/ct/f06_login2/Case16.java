@@ -116,16 +116,6 @@ public class Case16 {
 	@DisplayName("テスト04 パスワードを未入力で「変更」ボタン押下")
 	void test04() {
 
-		// 入力欄の取得
-		final WebElement password = webDriver.findElement(By.id("password"));
-		final WebElement passwordConfirm = webDriver.findElement(By.id("passwordConfirm"));
-
-		// キー入力
-		password.clear();
-		password.sendKeys("studentAA03");
-		passwordConfirm.clear();
-		passwordConfirm.sendKeys("studentAA03");
-
 		// ページ最下部までスクロール
 		scrollTo("1000");
 
@@ -135,19 +125,41 @@ public class Case16 {
 
 		// 更新前のエビデンス取得
 		getEvidence(new Object() {
-		}, "beforeUpdate");
+		}, "beforeModal");
+
+		visibilityTimeout(By.id("upd-btn"), 10);
+
+		getEvidence(new Object() {
+		}, "modalOpen");
 
 		// 確認モーダルウィンドウの変更ボタンを取得して押下
 		final WebElement upBtn = webDriver.findElement(By.id("upd-btn"));
 		upBtn.click();
 
+		scrollBy("100");
+
 		// 更新後のエビデンス取得
 		getEvidence(new Object() {
 		}, "afterUpdate");
 
-		// エラーメッセージの一致確認
-		String errorMsg = webDriver.findElement(By.xpath("//*[@id=\"upd-form\"]/div[1]/fieldset/div[1]/div/ul/li/span")).getText();
-		assertEquals("現在のパスワードは必須です。", errorMsg);
+		// 待ち処理
+		visibilityTimeout(By.xpath("//*[@id=\"upd-form\"]/div[1]/fieldset/div[1]/div/ul/li/span"), 10);
+
+		// エラーメッセージの一致確認(現在のパスワード)
+		String currentPwErrorMsg = webDriver
+				.findElement(By.xpath("//*[@id=\"upd-form\"]/div[1]/fieldset/div[1]/div/ul/li/span")).getText();
+		assertEquals("現在のパスワードは必須です。", currentPwErrorMsg);
+
+		// エラーメッセージの一致確認(新しいパスワード)
+		String newPwErrorMsg = webDriver
+				.findElement(By.xpath("//*[@id=\"upd-form\"]/div[1]/fieldset/div[2]/div/ul/li/span")).getText().trim();
+		assertTrue("「パスワード」には半角英数字のみ使用可能です。また、半角英大文字、半角英小文字、数字を含めた8～20文字を入力してください。パスワードは必須です。", newPwErrorMsg.contains(newPwErrorMsg));
+
+		// エラーメッセージの一致確認(確認パスワード)
+		String pwConfirmErrorMsg = webDriver
+				.findElement(By.xpath("//*[@id=\"upd-form\"]/div[1]/fieldset/div[3]/div/ul/li/span")).getText();
+		assertEquals("確認パスワードは必須です。", pwConfirmErrorMsg);
+
 	}
 
 	@Test
@@ -188,7 +200,8 @@ public class Case16 {
 		}, "afterUpdate");
 
 		// エラーメッセージの一致確認
-		String errorMsg = webDriver.findElement(By.xpath("//*[@id=\"upd-form\"]/div[1]/fieldset/div[2]/div/ul/li/span")).getText();
+		String errorMsg = webDriver.findElement(By.xpath("//*[@id=\"upd-form\"]/div[1]/fieldset/div[2]/div/ul/li/span"))
+				.getText();
 		assertEquals("パスワードの長さが最大値(20)を超えています。", errorMsg);
 	}
 
@@ -230,7 +243,8 @@ public class Case16 {
 		}, "afterUpdate");
 
 		// エラーメッセージの一致確認
-		String errorMsg = webDriver.findElement(By.xpath("//*[@id=\"upd-form\"]/div[1]/fieldset/div[2]/div/ul/li/span")).getText();
+		String errorMsg = webDriver.findElement(By.xpath("//*[@id=\"upd-form\"]/div[1]/fieldset/div[2]/div/ul/li/span"))
+				.getText();
 		assertEquals("現在と同じパスワードは使用できません。", errorMsg);
 	}
 
@@ -272,7 +286,8 @@ public class Case16 {
 		}, "afterUpdate");
 
 		// エラーメッセージの一致確認
-		String errorMsg = webDriver.findElement(By.xpath("//*[@id=\"upd-form\"]/div[1]/fieldset/div[2]/div/ul/li/span")).getText();
+		String errorMsg = webDriver.findElement(By.xpath("//*[@id=\"upd-form\"]/div[1]/fieldset/div[2]/div/ul/li/span"))
+				.getText();
 		assertEquals("パスワードと確認パスワードが一致しません。", errorMsg);
 	}
 

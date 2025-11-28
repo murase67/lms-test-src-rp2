@@ -143,5 +143,14 @@ public class WebDriverUtils {
         } catch (NoAlertPresentException e) {
         }
     }
+	
+	public String normalize(String s) {
+	    return s
+	            .replace("\u00A0", "")            // NBSP除去
+	            .replaceAll("<br>", "")          // <br>が文字列として取れるケースもある
+	            .replaceAll("[,\\s　]+$", "")     // 末尾の空白・カンマも除去
+	            .replaceAll("^[,\\s　]+", "")     // 先頭の空白・カンマも除去
+	            .trim();
+	}
 
 }
