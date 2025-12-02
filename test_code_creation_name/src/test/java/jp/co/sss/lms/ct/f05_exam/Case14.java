@@ -171,7 +171,7 @@ public class Case14 {
 	@Test
 	@Order(6)
 	@DisplayName("テスト06 正答と誤答が半々で「確認画面へ進む」ボタンを押下し試験回答確認画面に遷移")
-	void test06() {
+	void test06() throws InterruptedException {
 
 		// 第１問
 		final WebElement answer01 = webDriver.findElement(By.id("answer-0-2"));
@@ -220,7 +220,7 @@ public class Case14 {
 			final WebElement answer = webDriver.findElement(By.id("answer-" + i + "-0"));
 			answer.click();
 			getEvidence(new Object() {
-			}, "q" + i);
+			}, "q" + (i + 1));
 			scrollBy("370");
 		}
 
@@ -272,7 +272,7 @@ public class Case14 {
 	@Test
 	@Order(8)
 	@DisplayName("テスト08 「戻る」ボタンを押下し試験開始画面に遷移後当該試験の結果が反映される")
-	void test08() {
+	void test08() throws InterruptedException {
 
 		// ページ最下部までスクロール
 		scrollTo("5000");
@@ -292,9 +292,9 @@ public class Case14 {
 		// 遷移先のURLの一致確認
 		String url = webDriver.getCurrentUrl();
 		assertEquals("http://localhost:8080/lms/exam/start", url);
-		
-		// 待ち処理
-		pageLoadTimeout(10);
+
+		// ページ最下部までスクロール
+		scrollTo("5000");
 
 		// 試験後の過去の試験結果のエビデンス取得
 		getEvidence(new Object() {
